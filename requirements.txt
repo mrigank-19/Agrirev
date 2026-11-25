@@ -3,3 +3,5 @@ uvicorn
 scikit-learn
 pandas
 requests
+twilio
+python-multipart

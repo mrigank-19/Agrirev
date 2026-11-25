@@ -24,3 +24,18 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
+
+Run the API:
+
+```powershell
+uvicorn backend.main:app --reload
+```
+
+## WhatsApp (Twilio sandbox)
+
+1. Create a free account at [twilio.com](https://www.twilio.com/try-twilio) and open the WhatsApp sandbox under Messaging → Try it out.
+2. From your own WhatsApp, send the sandbox's `join <code>` message to its number to connect.
+3. Expose your local server (e.g. `ngrok http 8000`) and set the sandbox's "When a message comes in" webhook to `https://<your-ngrok-domain>/webhook`.
+4. Message the sandbox number to run through the district → land size → last crop flow and get a recommendation back.
+
+(Optional) Set `AGMARKNET_API_KEY` as an environment variable to enable live local mandi prices; without it, the bot still replies, just without a price figure.
