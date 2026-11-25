@@ -55,7 +55,9 @@ WhatsApp Business API webhook --> FastAPI backend
 | Agri export value/growth by commodity | APEDA AgriXchange (DGCIS-sourced) | Pre-downloaded, static — `data/apeda_export_raw.csv` / `data/export_rankings.csv` |
 | Local mandi prices | Agmarknet via data.gov.in | Live API call, cached, graceful fallback if no key/unavailable |
 | District rainfall | Ministry of Earth Sciences, "District Rainfall Normal 1951-2000" (data.gov.in) | Real annual normals for 640 districts, `data/district_rainfall.csv` |
-| Soil N/P/K, temperature, humidity, ph | Static lookup table | `backend/services/soil_defaults.py`, state-level approximation — not real per-district data, a known MVP simplification |
+| Live temperature/humidity | OpenWeatherMap free tier | `backend/services/weather.py`, falls back to static seasonal averages if no key/unavailable |
+| Soil N/P/K baseline | Static lookup table | `backend/services/soil_defaults.py`, state-level approximation — not real per-district data, a known MVP simplification |
+| Crop rotation effect on soil | Agronomic category rules | `backend/services/crop_rotation.py` — last crop's category (legume / heavy feeder / melon-vine / perennial fruit) adjusts N/P/K before prediction |
 
 ## Setup
 
@@ -72,6 +74,8 @@ uvicorn backend.main:app --reload
 ```
 
 (Optional) Set `AGMARKNET_API_KEY` as an environment variable to enable live local mandi prices; without it, the bot still replies, just without a price figure.
+
+(Optional) Set `OPENWEATHERMAP_API_KEY` (free tier, register at openweathermap.org/api) to use live temperature/humidity instead of the static seasonal averages; without it, the bot falls back to the static values automatically.
 
 ## WhatsApp (webhook built and tested, not live-wired for this demo)
 

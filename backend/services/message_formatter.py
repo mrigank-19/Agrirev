@@ -10,6 +10,9 @@ def format_recommendation(recommendation: dict) -> str:
         )
 
     lines = [f"Here's what we recommend for {recommendation['location']}:\n"]
+
+    if recommendation.get("rotation_note"):
+        lines.append(f"🌱 Soil note: {recommendation['rotation_note']}.\n")
     for rec in recs:
         price = rec["local_price"]
         price_text = (

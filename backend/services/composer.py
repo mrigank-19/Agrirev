@@ -25,6 +25,8 @@ def compose_recommendation(
     price_lookup: Callable[[str], dict],
     soil_explainer: Callable[[str], str],
     state_matched: bool,
+    rotation_note: str | None = None,
+    weather_is_live: bool = False,
 ) -> dict:
     viable_set = set(viable_crops)
     ranked_viable = [r for r in export_ranked if r[0] in viable_set]
@@ -71,4 +73,6 @@ def compose_recommendation(
             "Allocate your land across these crops rather than planting one crop exclusively."
         ),
         "data_coverage_note": None if state_matched else DATA_COVERAGE_NOTE,
+        "rotation_note": rotation_note,
+        "weather_source": "live" if weather_is_live else "seasonal average",
     }
