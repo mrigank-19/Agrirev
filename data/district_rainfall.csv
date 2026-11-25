@@ -1,0 +1,172 @@
+state_name,district_name,annual_rainfall_mm
+Andaman And Nicobar Islands,South Andaman,2879.7
+Andhra Pradesh,Anantapur,544.2
+Andhra Pradesh,Bapatla,865.6
+Andhra Pradesh,Kakinada,1039.4
+Andhra Pradesh,Krishna,949.4
+Andhra Pradesh,Kurnool,693.7
+Andhra Pradesh,Prakasam,905.4
+Andhra Pradesh,Srikakulam,989.3
+Andhra Pradesh,Sri Potti Sriramulu Nellore,970.3
+Andhra Pradesh,Tirupati,820.5
+Andhra Pradesh,Visakhapatnam,1020.7
+Arunachal Pradesh,East Siang,4013.0
+Arunachal Pradesh,Papum Pare,2710.3
+Assam,Cachar,2903.5
+Assam,Jorhat,1884.2
+Assam,Kamrup Metropolitan,1676.5
+Assam,Kokrajhar,2075.2
+Assam,Lakhimpur,3016.9
+Assam,Sonitpur,1675.7
+Bihar,Bhagalpur,1106.7
+Bihar,Gaya,1018.9
+Bihar,Muzaffarpur,1856.1
+Bihar,Patna,1147.8
+Bihar,Purnia,1482.9
+Chandigarh,Chandigarh,875.5
+Chhattisgarh,Bastar,1475.5
+Chhattisgarh,Gaurela-Pendra-Marwahi,1283.4
+Chhattisgarh,Raipur,1217.7
+Delhi,Delhi,681.0
+Delhi,New Delhi,702.6
+Goa,North Goa,2769.0
+Goa,South Goa,2637.5
+Gujarat,Ahmedabad,807.0
+Gujarat,Banaskantha,616.3
+Gujarat,Bhavnagar,657.8
+Gujarat,Devbhumi Dwaraka,401.8
+Gujarat,Gir Somnath,792.9
+Gujarat,Kutch,360.9
+Gujarat,Porbandar,638.9
+Gujarat,Rajkot,720.8
+Gujarat,Surat,1124.5
+Gujarat,Vadodara,918.6
+Haryana,Ambala,905.2
+Haryana,Hisar,493.6
+Haryana,Karnal,516.3
+Himachal Pradesh,Kangra,1971.7
+Himachal Pradesh,Kinnaur,738.6
+Himachal Pradesh,Kullu,871.2
+Himachal Pradesh,Shimla,1279.1
+Jammu And Kashmir,Anantnag,1067.1
+Jammu And Kashmir,Doda,1085.8
+Jammu And Kashmir,Jammu,1194.2
+Jammu And Kashmir,Kulgam,1163.7
+Jammu And Kashmir,Kupwara,941.0
+Jammu And Kashmir,Ramban,1312.5
+Jammu And Kashmir,Srinagar,674.2
+Jharkhand,East Singhbhum,1199.9
+Jharkhand,Palamu,987.5
+Jharkhand,Ranchi,1266.3
+Karnataka,Belagavi,974.1
+Karnataka,Bengaluru Urban,937.4
+Karnataka,Chitradurga,659.1
+Karnataka,Dakshina Kannada,3572.2
+Karnataka,Gadag,628.2
+Karnataka,Kalaburagi,736.7
+Karnataka,Uttara Kannada,3390.5
+Kerala,Alappuzha,2780.9
+Kerala,Ernakulam,2857.2
+Kerala,Kannur,3158.2
+Kerala,Kozhikode,2923.0
+Kerala,Thiruvananthapuram,1710.9
+Lakshadweep,Lakshadweep,1522.4
+Madhya Pradesh,Ashoknagar,1094.8
+Madhya Pradesh,Bhopal,1123.5
+Madhya Pradesh,Chhatarpur,1050.0
+Madhya Pradesh,Chhindwara,800.9
+Madhya Pradesh,Dindori,1155.7
+Madhya Pradesh,Guna,837.9
+Madhya Pradesh,Gwalior,760.2
+Madhya Pradesh,Indore,958.5
+Madhya Pradesh,Jabalpur,1334.2
+Madhya Pradesh,Narmadapuram,1234.2
+Madhya Pradesh,Satna,1079.5
+Maharashtra,Ahmednagar,802.9
+Maharashtra,Aurangabad,735.8
+Maharashtra,Buldhana,1172.0
+Maharashtra,Gondiya,1297.6
+Maharashtra,Jalgaon,1275.2
+Maharashtra,Kolhapur,1014.3
+Maharashtra,Mumbai City,2127.8
+Maharashtra,Mumbai Suburban,2307.4
+Maharashtra,Nagpur,1087.7
+Maharashtra,Nashik,653.1
+Maharashtra,Palghar,1844.0
+Maharashtra,Parbhani,809.1
+Maharashtra,Pune,760.5
+Maharashtra,Ratnagiri,2725.5
+Maharashtra,Sangli,559.8
+Maharashtra,Satara,3283.2
+Maharashtra,Solapur,671.9
+Manipur,Imphal West,1317.2
+Meghalaya,East Khasi Hills,6609.5
+Meghalaya,Ri-Bhoi,2001.8
+Mizoram,Mamit,2212.8
+Odisha,Baleshwar,1473.5
+Odisha,Bhadrak,1476.1
+Odisha,Jagatsinghapur,1521.4
+Odisha,Jharsuguda,1281.1
+Odisha,Kendujhar,1307.2
+Odisha,Khordha,1489.0
+Odisha,Puri,1342.9
+Odisha,Sambalpur,1380.0
+Puducherry,Puducherry,1319.4
+Punjab,Amritsar,696.5
+Punjab,Ludhiana,588.2
+Punjab,Patiala,823.7
+Rajasthan,Ajmer,519.7
+Rajasthan,Barmer,253.5
+Rajasthan,Bikaner,294.3
+Rajasthan,Churu,375.0
+Rajasthan,Jaipur,594.0
+Rajasthan,Jaisalmer,203.3
+Rajasthan,Jhunjhunu,2461.2
+Rajasthan,Jodhpur,398.3
+Rajasthan,Kota,729.5
+Rajasthan,Sri Ganganagar,274.2
+Rajasthan,Udaipur,586.0
+Sikkim,Gangtok,3104.3
+Tamil Nadu,Chennai,1335.6
+Tamil Nadu,Coimbatore,591.7
+Tamil Nadu,Cuddalore,1268.7
+Tamil Nadu,Dindigul,1536.2
+Tamil Nadu,Kanniyakumari,729.6
+Tamil Nadu,Madurai,829.9
+Tamil Nadu,Nagapattinam,1287.4
+Tamil Nadu,Ramanathapuram,923.8
+Tamil Nadu,Salem,942.6
+Tamil Nadu,Thanjavur,1115.6
+Tamil Nadu,Tiruchirappalli,827.1
+Tamil Nadu,Vellore,961.2
+Telangana,Hyderabad,802.0
+Telangana,Peddapalli,1110.1
+Tripura,Unakoti,2439.7
+Tripura,West Tripura,2056.2
+Uttarakhand,Dehradun,2116.0
+Uttarakhand,Nainital,1270.4
+Uttarakhand,Tehri Garhwal,867.8
+Uttarakhand,Udham Singh Nagar,1384.8
+Uttar Pradesh,Agra,743.1
+Uttar Pradesh,Amethi,871.6
+Uttar Pradesh,Azamgarh,987.6
+Uttar Pradesh,Bahraich,1200.4
+Uttar Pradesh,Bareilly,1025.5
+Uttar Pradesh,Gorakhpur,1202.5
+Uttar Pradesh,Jhansi,850.0
+Uttar Pradesh,Lucknow,962.3
+Uttar Pradesh,Meerut,620.9
+Uttar Pradesh,Prayagraj,768.8
+Uttar Pradesh,Rampur,1016.8
+Uttar Pradesh,Sultanpur,940.9
+Uttar Pradesh,Varanasi,977.1
+West Bengal,Bankura,1396.3
+West Bengal,Birbhum,1344.5
+West Bengal,Cooch Behar,3140.6
+West Bengal,Jalpaiguri,2839.8
+West Bengal,Kolkata,1710.1
+West Bengal,Maldah,1367.7
+West Bengal,North 24 Parganas,1627.4
+West Bengal,Paschim Bardhaman,835.1
+West Bengal,Purba Medinipur,1581.0
+West Bengal,South 24 Parganas,1436.1

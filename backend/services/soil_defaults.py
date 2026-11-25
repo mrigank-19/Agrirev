@@ -1,10 +1,21 @@
-"""Static state-level soil/climate defaults for the MVP.
+"""Soil/climate defaults for the MVP, layered at two levels of precision.
 
-Per the build spec: don't try to cover every district precisely — a
-reasonable state/region-level default is enough for a convincing demo.
-Values are approximate typical N/P/K (kg/ha ratios), temperature (C),
-humidity (%), ph, and rainfall (mm) for each state's major growing regions.
+Rainfall: real, per-district averages computed from IMD-sourced daily/monthly
+station records (data/district_rainfall.csv, ~1969-2020, via
+indiadataportal.com's open CKAN API) — genuine government data, not a guess.
+The suitability model's "rainfall" feature is on a monthly scale (the
+Kaggle training data ranges ~20-300mm), so district annual totals are
+divided by 12 to match.
+
+N/P/K, temperature, humidity, ph: still state-level approximations, not
+per-district. Real per-district soil nutrient and temperature data wasn't
+available within the project's timeframe — this is a known simplification,
+consistent with the build spec's guidance that a region-level default is
+enough for an MVP demo. Don't read these as precise per-district figures.
 """
+
+import csv
+from pathlib import Path
 
 NATIONAL_DEFAULT = {
     "N": 70, "P": 50, "K": 45,
@@ -26,11 +37,34 @@ STATE_DEFAULTS = {
     "rajasthan": {"N": 45, "P": 35, "K": 30, "temperature": 29.0, "humidity": 40.0, "ph": 7.5, "rainfall": 45.0},
 }
 
+DISTRICT_RAINFALL_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "district_rainfall.csv"
+
+# (state_lower, district_lower) -> monthly-scale rainfall (annual_mm / 12)
+_DISTRICT_RAINFALL: dict[tuple[str, str], float] = {}
+with open(DISTRICT_RAINFALL_PATH, encoding="utf-8") as f:
+    for row in csv.DictReader(f):
+        state_key = row["state_name"].strip().lower()
+        district_key = row["district_name"].strip().lower()
+        _DISTRICT_RAINFALL[(state_key, district_key)] = float(row["annual_rainfall_mm"]) / 12
+
 
 def get_soil_inputs(location: str) -> tuple[dict, str | None]:
-    """Resolve a free-text location string to soil/climate inputs and a matched state name."""
+    """Resolve a free-text location string to soil/climate inputs and a matched state name.
+
+    Checks for a known district name first (real rainfall data layered on
+    the district's state profile for the other factors), then falls back to
+    a state-only match, then the national default.
+    """
     normalized = (location or "").lower()
+
+    for (state_key, district_key), monthly_rainfall in _DISTRICT_RAINFALL.items():
+        if district_key in normalized:
+            base = dict(STATE_DEFAULTS.get(state_key, NATIONAL_DEFAULT))
+            base["rainfall"] = round(monthly_rainfall, 1)
+            return base, state_key
+
     for state, values in STATE_DEFAULTS.items():
         if state in normalized:
             return dict(values), state
+
     return dict(NATIONAL_DEFAULT), None
