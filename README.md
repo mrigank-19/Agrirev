@@ -62,7 +62,9 @@ WhatsApp Business API webhook --> FastAPI backend
 
 ## Revenue projection
 
-Each recommended crop gets an estimated revenue (allocated acres × typical yield × known price per quintal) whenever both a yield figure and a real price (FPO-reported or Agmarknet) are available — never a guessed number. When a `last_crop` is given and its price is known too, the reply also compares the full recommended plan's revenue against sticking with that crop on all the land. If any recommended crop is missing price data, the comparison is shown as partial rather than silently understating the real total — it never claims a misleading percentage change from incomplete numbers.
+Each recommended crop gets an estimated revenue (allocated acres × typical yield × a known price per quintal), using whichever price is available — **export-market price preferred, local mandi/FPO price as fallback**, since this product's whole premise is that export markets pay more for rising-demand crops. The export price is implied from APEDA's export value ÷ quantity (see `scripts/prepare_export_data.py`), converted to INR at an indicative, not live, exchange rate — so treat it as directional, not a quoted rate. Revenue is never fabricated: a crop with no price from either source just shows no revenue figure.
+
+When a `last_crop` is given and its price is known too (export or local), the reply also compares the full recommended plan's revenue against sticking with that crop on all the land. If any recommended crop is missing price data, the comparison is shown as partial rather than silently understating the real total — it never claims a misleading percentage change from incomplete numbers.
 
 ## Setup
 
