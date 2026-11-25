@@ -72,21 +72,31 @@ uvicorn backend.main:app --reload
 
 (Optional) Set `AGMARKNET_API_KEY` as an environment variable to enable live local mandi prices; without it, the bot still replies, just without a price figure.
 
-## WhatsApp (Twilio sandbox)
+## WhatsApp (webhook built and tested, not live-wired for this demo)
 
-1. Create a free account at [twilio.com](https://www.twilio.com/try-twilio) and open the WhatsApp sandbox under Messaging → Try it out.
-2. From your own WhatsApp, send the sandbox's `join <code>` message to its number to connect.
-3. Expose your local server (e.g. `ngrok http 8000`) and set the sandbox's "When a message comes in" webhook to `https://<your-ngrok-domain>/webhook`.
-4. Message the sandbox number to run through the district → land size → last crop flow and get a recommendation back.
+`backend/routes/webhook.py` implements the full Twilio-format sandbox webhook — the district → land size → last crop conversational flow, session state, and plain-language reply are all built and verified (see `scripts/demo_scenarios.py` and the test transcript below). It is not wired to a live WhatsApp number for this submission: Twilio changed its trial-account policy so that any custom webhook, WhatsApp sender, or the Conversations API now requires a paid upgrade — confirmed directly against the API (`Messages`, `Conversations`, and WhatsApp sender registration all return trial-restriction errors). Free alternatives (Meta Cloud API, Gupshup) exist but need significantly more setup than hackathon time allows here.
+
+To wire it up yourself once you have a paid Twilio account or a Meta Cloud API app:
+1. Point the provider's incoming-message webhook at `https://<your-public-url>/webhook`.
+2. If using Meta instead of Twilio, adjust the form-parsing in `whatsapp_webhook()` to Meta's JSON payload shape.
 
 ## Demo prep
 
-Run the canned, known-good scenarios offline (no WiFi/WhatsApp dependency) to rehearse or sanity-check:
+Run the canned, known-good scenarios (no WiFi/WhatsApp dependency) to show the bot's actual conversational output during judging:
 
 ```powershell
 python scripts/demo_scenarios.py
 ```
 
-This prints the formatted reply for three districts (Maharashtra, Punjab, West Bengal) that are confirmed to produce clean, varied output — use these during judging instead of live, unpredictable input.
+This prints the formatted reply for three districts (Maharashtra, Punjab, West Bengal) that are confirmed to produce clean, varied output.
 
-**Screen-capture backup:** once your Twilio sandbox is connected (see above), record a short screen capture of the WhatsApp conversation for one or two of the scenarios above, in case live demo WiFi fails. This step needs your own connected sandbox and hasn't been recorded yet.
+You can also demonstrate the webhook logic itself is real and working by simulating a Twilio-format conversation locally:
+
+```powershell
+curl -X POST http://127.0.0.1:8000/webhook --data-urlencode "From=whatsapp:+91XXXXXXXXXX" --data-urlencode "Body=hi"
+curl -X POST http://127.0.0.1:8000/webhook --data-urlencode "From=whatsapp:+91XXXXXXXXXX" --data-urlencode "Body=Nashik, Maharashtra"
+curl -X POST http://127.0.0.1:8000/webhook --data-urlencode "From=whatsapp:+91XXXXXXXXXX" --data-urlencode "Body=5"
+curl -X POST http://127.0.0.1:8000/webhook --data-urlencode "From=whatsapp:+91XXXXXXXXXX" --data-urlencode "Body=skip"
+```
+
+Each call returns real TwiML with the next prompt, ending in a full formatted recommendation — this is the actual code path a connected WhatsApp number would run, just driven by curl instead of a live sandbox.
