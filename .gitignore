@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+.env.*
+
+# Model artifacts over a size threshold (keep small .pkl, ignore large binaries)
+*.pkl.gz
+*.h5
+*.onnx
+/model/*.bin
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Data caches
+*.csv.cache
