@@ -54,7 +54,7 @@ WhatsApp Business API webhook --> FastAPI backend
 | Soil NPK / climate → crop suitability | Kaggle crop-recommendation dataset | Trained once, shipped as `model/suitability_model.pkl` |
 | Agri export value/growth by commodity | APEDA AgriXchange (DGCIS-sourced) | Pre-downloaded, static — `data/apeda_export_raw.csv` / `data/export_rankings.csv` |
 | Local mandi prices | Agmarknet via data.gov.in | Live API call, cached, graceful fallback if no key/unavailable |
-| District rainfall | IMD station records via indiadataportal.com's open CKAN API | Real averages for 171 districts, `data/district_rainfall.csv` |
+| District rainfall | Ministry of Earth Sciences, "District Rainfall Normal 1951-2000" (data.gov.in) | Real annual normals for 640 districts, `data/district_rainfall.csv` |
 | Soil N/P/K, temperature, humidity, ph | Static lookup table | `backend/services/soil_defaults.py`, state-level approximation — not real per-district data, a known MVP simplification |
 
 ## Setup

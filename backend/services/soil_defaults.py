@@ -1,11 +1,15 @@
 """Soil/climate defaults for the MVP, layered at two levels of precision.
 
-Rainfall: real, per-district averages computed from IMD-sourced daily/monthly
-station records (data/district_rainfall.csv, ~1969-2020, via
-indiadataportal.com's open CKAN API) — genuine government data, not a guess.
-The suitability model's "rainfall" feature is on a monthly scale (the
-Kaggle training data ranges ~20-300mm), so district annual totals are
-divided by 12 to match.
+Rainfall: real, per-district annual normals (data/district_rainfall.csv),
+from the Ministry of Earth Sciences' "District Rainfall Normal (mm),
+Monthly/Seasonal/Annual, 1951-2000" dataset on data.gov.in — genuine
+government data covering 640 districts, not a guess. The suitability
+model's "rainfall" feature is on a monthly scale (the Kaggle training data
+ranges ~20-300mm), so annual totals are divided by 12 to match.
+
+A handful of district names (4, e.g. "Aurangabad") exist in more than one
+state; when the input text also names the state, that's used to disambiguate,
+otherwise the first match wins arbitrarily.
 
 N/P/K, temperature, humidity, ph: still state-level approximations, not
 per-district. Real per-district soil nutrient and temperature data wasn't
@@ -15,6 +19,7 @@ enough for an MVP demo. Don't read these as precise per-district figures.
 """
 
 import csv
+from collections import defaultdict
 from pathlib import Path
 
 NATIONAL_DEFAULT = {
@@ -39,13 +44,14 @@ STATE_DEFAULTS = {
 
 DISTRICT_RAINFALL_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "district_rainfall.csv"
 
-# (state_lower, district_lower) -> monthly-scale rainfall (annual_mm / 12)
-_DISTRICT_RAINFALL: dict[tuple[str, str], float] = {}
+# district_lower -> list of (state_lower, monthly-scale rainfall), usually one entry
+_DISTRICT_RAINFALL: dict[str, list[tuple[str, float]]] = defaultdict(list)
 with open(DISTRICT_RAINFALL_PATH, encoding="utf-8") as f:
     for row in csv.DictReader(f):
         state_key = row["state_name"].strip().lower()
         district_key = row["district_name"].strip().lower()
-        _DISTRICT_RAINFALL[(state_key, district_key)] = float(row["annual_rainfall_mm"]) / 12
+        monthly_rainfall = float(row["annual_rainfall_mm"]) / 12
+        _DISTRICT_RAINFALL[district_key].append((state_key, monthly_rainfall))
 
 
 def get_soil_inputs(location: str) -> tuple[dict, str | None]:
@@ -57,11 +63,20 @@ def get_soil_inputs(location: str) -> tuple[dict, str | None]:
     """
     normalized = (location or "").lower()
 
-    for (state_key, district_key), monthly_rainfall in _DISTRICT_RAINFALL.items():
-        if district_key in normalized:
-            base = dict(STATE_DEFAULTS.get(state_key, NATIONAL_DEFAULT))
-            base["rainfall"] = round(monthly_rainfall, 1)
-            return base, state_key
+    for district_key, candidates in _DISTRICT_RAINFALL.items():
+        if district_key not in normalized:
+            continue
+
+        state_key, monthly_rainfall = candidates[0]
+        if len(candidates) > 1:
+            for candidate_state, candidate_rainfall in candidates:
+                if candidate_state in normalized:
+                    state_key, monthly_rainfall = candidate_state, candidate_rainfall
+                    break
+
+        base = dict(STATE_DEFAULTS.get(state_key, NATIONAL_DEFAULT))
+        base["rainfall"] = round(monthly_rainfall, 1)
+        return base, state_key
 
     for state, values in STATE_DEFAULTS.items():
         if state in normalized:
