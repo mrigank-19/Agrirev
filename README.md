@@ -53,7 +53,7 @@ WhatsApp Business API webhook --> FastAPI backend
 |---|---|---|
 | Soil NPK / climate → crop suitability | Kaggle crop-recommendation dataset | Trained once, shipped as `model/suitability_model.pkl` |
 | Agri export value/growth by commodity | APEDA AgriXchange (DGCIS-sourced) | Pre-downloaded, static — `data/apeda_export_raw.csv` / `data/export_rankings.csv` |
-| Local mandi prices | Agmarknet via data.gov.in | Live API call, cached, graceful fallback if no key/unavailable |
+| Local mandi prices | FPO-reported first, then Agmarknet via data.gov.in | FPOs can self-report current prices at `/fpo` (checked before Agmarknet); falls back to "not available" if neither has data |
 | District rainfall | Ministry of Earth Sciences, "District Rainfall Normal 1951-2000" (data.gov.in) | Real annual normals for 640 districts, `data/district_rainfall.csv` |
 | Live temperature/humidity | OpenWeatherMap free tier | `backend/services/weather.py`, falls back to static seasonal averages if no key/unavailable |
 | Soil N/P/K baseline | Static lookup table | `backend/services/soil_defaults.py`, state-level approximation — not real per-district data, a known MVP simplification |
@@ -76,6 +76,10 @@ uvicorn backend.main:app --reload
 (Optional) Set `AGMARKNET_API_KEY` as an environment variable to enable live local mandi prices; without it, the bot still replies, just without a price figure.
 
 (Optional) Set `OPENWEATHERMAP_API_KEY` (free tier, register at openweathermap.org/api) to use live temperature/humidity instead of the static seasonal averages; without it, the bot falls back to the static values automatically.
+
+## FPO mandi price dashboard
+
+Agmarknet's coverage is incomplete and needs a registered API key, so `/fpo` gives local FPOs/CSCs a direct way to report the price they're actually seeing at their own mandi. Any price reported there takes priority over Agmarknet and removes the "local market not confirmed" warning for that crop. No authentication yet — fine for a hackathon demo with a known group of users, but would need access control before any real deployment. Prices are stored in `data/manual_mandi_prices.json`.
 
 ## WhatsApp (webhook built and tested, not live-wired for this demo)
 

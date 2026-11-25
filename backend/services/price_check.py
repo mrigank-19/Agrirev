@@ -1,13 +1,19 @@
-"""Local mandi price lookup via the Agmarknet dataset on data.gov.in.
+"""Local mandi price lookup: checks FPO-reported manual prices first, then
+the Agmarknet dataset on data.gov.in.
 
-Requires a free self-registered data.gov.in API key (AGMARKNET_API_KEY env
-var). Per the build spec: never let a slow/unavailable price API fail the
-whole response — fall back to "not available" instead.
+Agmarknet requires a free self-registered data.gov.in API key
+(AGMARKNET_API_KEY env var) and has incomplete coverage; manual entries
+from backend/services/manual_price_store.py take priority since they're
+more likely to be current for a given FPO's own mandi. Per the build spec:
+never let a slow/unavailable price API fail the whole response — fall
+back to "not available" instead.
 """
 
 import os
 
 import requests
+
+from backend.services.manual_price_store import get_manual_price
 
 AGMARKNET_RESOURCE_ID = "9ef84268-d588-465a-a308-a864a43d0070"
 AGMARKNET_URL = f"https://api.data.gov.in/resource/{AGMARKNET_RESOURCE_ID}"
@@ -18,6 +24,10 @@ _cache: dict[tuple[str, str], dict] = {}
 
 def get_local_price(crop: str, state: str | None) -> dict:
     """Return the latest modal mandi price for a crop in a state, or an unavailable marker."""
+    manual = get_manual_price(crop, state)
+    if manual:
+        return manual
+
     cache_key = (crop.lower(), (state or "").lower())
     if cache_key in _cache:
         return _cache[cache_key]
