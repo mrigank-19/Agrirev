@@ -1,6 +1,8 @@
 """Twilio WhatsApp sandbox webhook: receives incoming messages, runs the
 sequential Q&A flow, and replies with the composed recommendation."""
 
+import logging
+
 from fastapi import APIRouter, Request, Response
 from twilio.twiml.messaging_response import MessagingResponse
 
@@ -9,12 +11,18 @@ from backend.services.recommendation_service import build_recommendation
 from backend.services.session_store import create_session, get_session, reset_session, update_session
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 PROMPTS = {
     "district": "🌾 Welcome to AgriExport Advisor! What's your district/village?",
     "land_size": "How much land (in acres) are you planting this season?",
     "last_crop": "What did you grow last season? (or type 'skip')",
 }
+
+FALLBACK_REPLY = (
+    "Sorry, something went wrong on our end putting your recommendation together. "
+    "Please try again in a moment, or reply 'hi' to restart."
+)
 
 
 @router.post("/webhook")
@@ -23,7 +31,12 @@ async def whatsapp_webhook(request: Request):
     from_number = form.get("From", "unknown")
     body = (form.get("Body") or "").strip()
 
-    reply_text = handle_incoming_message(from_number, body)
+    try:
+        reply_text = handle_incoming_message(from_number, body)
+    except Exception:
+        logger.exception("Failed to handle WhatsApp message from %s", from_number)
+        reset_session(from_number)
+        reply_text = FALLBACK_REPLY
 
     twiml = MessagingResponse()
     twiml.message(reply_text)

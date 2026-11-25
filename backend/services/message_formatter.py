@@ -11,8 +11,6 @@ def format_recommendation(recommendation: dict) -> str:
 
     lines = [f"Here's what we recommend for {recommendation['location']}:\n"]
     for rec in recs:
-        growth = rec["export_growth_pct"]
-        growth_text = f"{growth:+.1f}% export growth" if growth is not None else "export data not available"
         price = rec["local_price"]
         price_text = (
             f"local mandi price ~₹{price['modal_price_per_quintal']}/quintal"
@@ -20,9 +18,15 @@ def format_recommendation(recommendation: dict) -> str:
             else "local mandi price not available right now"
         )
         lines.append(
-            f"• {rec['crop'].title()} — plant ~{rec['suggested_allocation_pct']}% of your land. "
-            f"{growth_text}, {price_text}."
+            f"• {rec['crop'].title()} — plant ~{rec['suggested_allocation_pct']}% of your land.\n"
+            f"  {rec['why']} {price_text.capitalize()}."
         )
+        if rec.get("local_market_flag"):
+            lines.append(f"  ⚠️ {rec['local_market_note']}")
 
     lines.append(f"\n{recommendation['guardrail_note']}")
+
+    if recommendation.get("data_coverage_note"):
+        lines.append(f"\nℹ️ {recommendation['data_coverage_note']}")
+
     return "\n".join(lines)

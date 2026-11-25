@@ -15,4 +15,6 @@ def build_recommendation(location: str, land_size: float, last_crop: str | None 
         viable_crops=viable_crops,
         export_ranked=ranked,
         price_lookup=lambda crop: price_check.get_local_price(crop, state),
+        soil_explainer=lambda crop: suitability.explain_viability(crop, soil_inputs),
+        state_matched=state is not None,
     )
