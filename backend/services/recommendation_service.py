@@ -27,4 +27,5 @@ def build_recommendation(location: str, land_size: float, last_crop: str | None 
         state_matched=state is not None,
         rotation_note=rotation_note,
         weather_is_live=live_weather is not None,
+        last_crop=last_crop,
     )

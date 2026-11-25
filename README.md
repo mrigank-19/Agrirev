@@ -58,6 +58,11 @@ WhatsApp Business API webhook --> FastAPI backend
 | Live temperature/humidity | OpenWeatherMap free tier | `backend/services/weather.py`, falls back to static seasonal averages if no key/unavailable |
 | Soil N/P/K baseline | Static lookup table | `backend/services/soil_defaults.py`, state-level approximation — not real per-district data, a known MVP simplification |
 | Crop rotation effect on soil | Agronomic category rules | `backend/services/crop_rotation.py` — last crop's category (legume / heavy feeder / melon-vine / perennial fruit) adjusts N/P/K before prediction |
+| Typical crop yield (for revenue estimates) | Published national average yields | `backend/services/crop_yield.py` — approximate, not measured for any specific field |
+
+## Revenue projection
+
+Each recommended crop gets an estimated revenue (allocated acres × typical yield × known price per quintal) whenever both a yield figure and a real price (FPO-reported or Agmarknet) are available — never a guessed number. When a `last_crop` is given and its price is known too, the reply also compares the full recommended plan's revenue against sticking with that crop on all the land. If any recommended crop is missing price data, the comparison is shown as partial rather than silently understating the real total — it never claims a misleading percentage change from incomplete numbers.
 
 ## Setup
 
